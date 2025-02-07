@@ -1,0 +1,277 @@
+openapi: "3.0.0"
+info:
+  title: "Redurable Order API"
+  description: "API for retrieving and managing Purchase Orders and PR"
+  version: "1.0.0"
+servers:
+  - url: "https://reducio.effigo.com/api"
+    description: "Production Server"
+paths:
+  /PO:
+    get:
+      summary: "Retrieve a list of Purchase Orders within a given date range"
+      parameters:
+        - name: "startDaysAgo"
+          in: "query"
+          description: "The number of days back to start retrieving orders."
+          required: true
+          style: "form"
+          explode: true
+          schema:
+            type: "integer"
+            example: 20
+        - name: "endDaysAgo"
+          in: "query"
+          description: "The number of days back to end retrieving orders."
+          required: true
+          style: "form"
+          explode: true
+          schema:
+            type: "integer"
+            example: 0
+      responses: 200:
+          description: "A list of purchase orders"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PurchaseOrder"
+    post:
+      summary: "Create a new Purchase Order"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PurchaseOrder"
+      responses: 201:
+          description: "Purchase Order created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PurchaseOrder"
+    put:
+      summary: "Update an existing Purchase Order"
+      parameters:
+        - name: "poNumber"
+          in: "path"
+          required: true
+          description: "The purchase order number to update"
+          schema:
+            type: "integer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PurchaseOrder"
+      responses: 200:
+          description: "Purchase Order updated successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PurchaseOrder"
+  /PR:
+    get:
+      summary: "Retrieve a list of Purchase Requisitions within a given date range"
+      parameters:
+        - name: "startDaysAgo"
+          in: "query"
+          description: "The number of days back to start retrieving requisitions."
+          required: true
+          style: "form"
+          explode: true
+          schema:
+            type: "integer"
+            example: 30
+        - name: "endDaysAgo"
+          in: "query"
+          description: "The number of days back to end retrieving requisitions."
+          required: true
+          style: "form"
+          explode: true
+          schema:
+            type: "integer"
+            example: 0
+      responses: 200:
+          description: "A list of purchase requisitions"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PurchaseRequisition"
+    post:
+      summary: "Create a new Purchase Requisition"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PurchaseRequisition"
+      responses: 201:
+          description: "Purchase Requisition created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PurchaseRequisition"
+    put:
+      summary: "Update an existing Purchase Requisition"
+      parameters:
+        - name: "prNumber"
+          in: "path"
+          required: true
+          description: "The purchase requisition number to update"
+          schema:
+            type: "integer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PurchaseRequisition"
+      responses: 200:
+          description: "Purchase Requisition updated successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PurchaseRequisition"
+components:
+  schemas:
+    PurchaseOrder:
+      type: "object"
+      properties:
+        poNumber:
+          type: "integer"
+          description: "The purchase order number."
+          example: 6329
+        totalAmount:
+          type: "number"
+          description: "The total amount of the purchase order."
+          example: 415
+        lines:
+          type: "array"
+          description: "List of order lines within the PO."
+          items:
+            $ref: "#/components/schemas/OrderLine"
+        prNumber:
+          type: "integer"
+          description: "The purchase requisition number related to the PO."
+          example: 4921
+        additionalCode:
+          type: "string"
+          description: "Additional information or internal code related to the order."
+          example: "Training_25"
+        supplierCode:
+          type: "string"
+          description: "The supplier code for the purchase order."
+          example: "SUP123"
+        orderPeriodDate:
+          type: "string"
+          description: "The date when the order period starts."
+          format: "date"
+          example: "2025-01-16"
+        deliveryDate:
+          type: "string"
+          description: "The expected delivery date for the purchase order."
+          format: "date"
+          example: "2025-02-03"
+        accountingCode:
+          type: "string"
+          description: "The accounting sub-account code."
+          example: "ACCT_45678"
+        orderTypeCode:
+          type: "string"
+          description: "The code for the type or classification of the order."
+          example: "TYPE_L"
+        deliveryContact:
+          type: "string"
+          description: "The primary contact for delivery."
+          example: "Anonymous"
+        supplierTradeName:
+          type: "string"
+          description: "The supplier's trade or commercial name."
+          example: "Generic Supplier"
+        requesterName:
+          type: "string"
+          description: "The name of the person requesting the order."
+          example: "Anonymous Requester"
+        freeZone:
+          type: "string"
+          description: "Additional information or notes."
+          example: ""
+    PurchaseRequisition:
+      type: "object"
+      properties:
+        prNumber:
+          type: "integer"
+          description: "The purchase requisition number."
+          example: 4861
+        documentNumber:
+          type: "integer"
+          description: "Document number related to the requisition."
+          example: 6263
+        companyCode:
+          type: "string"
+          description: "Code of the associated company."
+          example: "CMP456"
+        emissionDate:
+          type: "string"
+          description: "Emission date of the purchase requisition."
+          format: "date-time"
+        requesterCode:
+          type: "string"
+          description: "Code identifying the requester."
+          example: "REQ12345"
+        validationDate:
+          type: "string"
+          description: "Validation date of the purchase requisition."
+          format: "date-time"
+        accountingSection:
+          type: "string"
+          description: "Accounting section code for budget imputation."
+          example: "ACC_SECT_01"
+        additionalCode:
+          type: "string"
+          description: "Additional code related to the requisition."
+          example: "Add_Code_25"
+        buyerCode:
+          type: "string"
+          description: "Code of the buyer handling the requisition."
+          example: "BUY6543"
+        associatedPoNumber:
+          type: "integer"
+          description: "Purchase order number associated with the requisition."
+          example: 6263
+    OrderLine:
+      type: "object"
+      properties:
+        unitPrice:
+          type: "number"
+          description: "The unit price of the item."
+          example: 415
+        lineTotal:
+          type: "number"
+          description: "The total price for the order line."
+          example: 415
+        genericArticle:
+          type: "string"
+          description: "The generic article code or reference."
+          example: "GEN123"
+        description:
+          type: "string"
+          description: "The description of the item."
+          example: "Training Session"
+        accountingAssignment:
+          type: "string"
+          description: "The accounting assignment or imputation code."
+          example: "ACCASS456"
+        quantity:
+          type: "number"
+          description: "The quantity ordered."
+          example: 1
+        lineNumber:
+          type: "integer"
+          description: "The line number within the order."
+          example: 1
