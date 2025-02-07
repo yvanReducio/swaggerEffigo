@@ -76,6 +76,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PurchaseOrder"
+    delete:
+      summary: "Delete a specific Purchase Order"
+      parameters:
+        - name: "poNumber"
+          in: "path"
+          required: true
+          description: "The purchase order number to delete"
+          schema:
+            type: "integer"
+      responses:
+        204:
+          description: "Purchase Order deleted successfully"
   /PR:
     get:
       summary: "Retrieve a list of Purchase Requisitions within a given date range"
@@ -145,6 +157,60 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PurchaseRequisition"
+    delete:
+      summary: "Delete a specific Purchase Requisition"
+      parameters:
+        - name: "prNumber"
+          in: "path"
+          required: true
+          description: "The purchase requisition number to delete"
+          schema:
+            type: "integer"
+      responses:
+        204:
+          description: "Purchase Requisition deleted successfully"
+
+  /supplier:
+    get:
+      summary: "Retrieve a list of suppliers"
+      responses:
+        200:
+          description: "A list of suppliers"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Supplier"
+    post:
+      summary: "Create a new Supplier"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Supplier"
+      responses:
+        201:
+          description: "Supplier created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supplier"
+  /supplier/{supplierCode}:
+    delete:
+      summary: "Delete a specific Supplier"
+      parameters:
+        - name: "supplierCode"
+          in: "path"
+          required: true
+          description: "The supplier code of the supplier to delete"
+          schema:
+            type: "string"
+      responses:
+        204:
+          description: "Supplier deleted successfully"
+          
 components:
   schemas:
     PurchaseOrder:
@@ -283,3 +349,14 @@ components:
           type: "integer"
           description: "The line number within the order."
           example: 1
+    Supplier:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "The name of the supplier."
+          example: "Generic Supplier"
+        supplierCode:
+          type: "string"
+          description: "The unique code for the supplier."
+          example: "SUP123"
