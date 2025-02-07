@@ -29,7 +29,8 @@ paths:
           schema:
             type: "integer"
             example: 0
-      responses: 200:
+      responses: 
+        200:
           description: "A list of purchase orders"
           content:
             application/json:
@@ -45,12 +46,14 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/PurchaseOrder"
-      responses: 201:
+      responses: 
+        201:
           description: "Purchase Order created successfully"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PurchaseOrder"
+  /PO/{poNumber}:
     put:
       summary: "Update an existing Purchase Order"
       parameters:
@@ -66,7 +69,8 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/PurchaseOrder"
-      responses: 200:
+      responses: 
+        200:
           description: "Purchase Order updated successfully"
           content:
             application/json:
@@ -94,7 +98,8 @@ paths:
           schema:
             type: "integer"
             example: 0
-      responses: 200:
+      responses: 
+        200:
           description: "A list of purchase requisitions"
           content:
             application/json:
@@ -110,12 +115,14 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/PurchaseRequisition"
-      responses: 201:
+      responses: 
+        201:
           description: "Purchase Requisition created successfully"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PurchaseRequisition"
+  /PR/{prNumber}:
     put:
       summary: "Update an existing Purchase Requisition"
       parameters:
@@ -131,7 +138,8 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/PurchaseRequisition"
-      responses: 200:
+      responses: 
+        200:
           description: "Purchase Requisition updated successfully"
           content:
             application/json:
